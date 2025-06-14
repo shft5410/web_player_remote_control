@@ -1,6 +1,6 @@
 import { type WSCommand } from '@/types/websocket'
-import { WSConnection } from '@/content/WSConnection'
-import * as YTMusic from '@/content/ytmusic'
+import { WSConnection } from '@/contentScripts/WSConnection'
+import * as YTMusic from '@/contentScripts/ytmusic'
 
 export default defineContentScript({
     matches: ['https://music.youtube.com/*'],
