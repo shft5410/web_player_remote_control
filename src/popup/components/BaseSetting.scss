@@ -1,0 +1,62 @@
+@use '@/popup/assets/styles/variables.scss' as *;
+
+.base-setting {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba($color-blue-700, 0.6);
+    border-radius: 1.25rem;
+    backdrop-filter: blur(4px);
+    user-select: none;
+
+    &__first-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex: 1;
+        min-height: calc(2.5rem - 2px);
+
+        .base-setting--expandable & {
+            cursor: pointer;
+        }
+
+        &__label {
+            margin: 0;
+            font-weight: 400;
+            font-size: 0.9rem;
+            padding-block: 0.4rem;
+            padding-left: 0.8rem;
+        }
+
+        &__control-wrapper {
+            margin-right: calc(0.5rem - 1px);
+        }
+
+        &__expand-indicator {
+            margin-right: calc(0.6rem - 1px);
+            height: 1.3rem;
+            aspect-ratio: 1;
+            background-color: $color-blue-100;
+            border-radius: 50%;
+            mask: url('@/popup/assets/icons/chevronRight.svg') no-repeat 1px / contain, linear-gradient(#000 0 0);
+            mask-composite: exclude;
+            transition: rotate 0.15s ease-in-out;
+
+            .base-setting--expanded & {
+                rotate: 90deg;
+            }
+        }
+    }
+
+    &__collapsible-container {
+        overflow: hidden;
+        transition-property: max-height;
+        transition: 0.15s ease-in-out;
+    }
+
+    &__second-row {
+        display: flex;
+        margin-top: 0.2rem;
+        margin-bottom: 0.6rem;
+        margin-inline: 0.8rem;
+    }
+}

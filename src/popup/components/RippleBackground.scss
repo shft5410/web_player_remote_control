@@ -1,0 +1,21 @@
+@use '@/popup/assets/styles/variables.scss' as *;
+
+.ripple-background {
+    position: fixed;
+    inset: 0;
+    --ripple-gradient-offset: 0px;
+    background: repeating-radial-gradient(
+            circle at 0 0,
+            #0000 var(--ripple-gradient-offset) calc(var(--ripple-gradient-offset) + 10px),
+            $color-dark 0 calc(var(--ripple-gradient-offset) + 20px)
+        ),
+        conic-gradient(from 90deg at 0 0, $color-dark, #0000 3deg 87deg, $color-dark 90deg),
+        radial-gradient(
+            circle at 0 0,
+            $color-blue-100 0px,
+            $color-blue-300 20px,
+            $color-blue-500 60px,
+            $color-dark 180px
+        );
+    z-index: -1;
+}
