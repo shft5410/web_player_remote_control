@@ -1,4 +1,4 @@
-import '@/popup/App.css'
+import '@/popup/App.scss'
 import RippleBackground from '@/popup/components/RippleBackground'
 
 function App() {
