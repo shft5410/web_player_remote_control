@@ -4,6 +4,7 @@
     position: fixed;
     inset: 0;
     --ripple-gradient-offset: 0px;
+    --background-gradient-offset: 180px;
     background: repeating-radial-gradient(
             circle at 0 0,
             #0000 var(--ripple-gradient-offset) calc(var(--ripple-gradient-offset) + 10px),
@@ -12,10 +13,10 @@
         conic-gradient(from 90deg at 0 0, $color-dark, #0000 3deg 87deg, $color-dark 90deg),
         radial-gradient(
             circle at 0 0,
-            $color-blue-100 0px,
-            $color-blue-300 20px,
-            $color-blue-500 60px,
-            $color-dark 180px
+            $color-blue-100 calc(0px - var(--background-gradient-offset)),
+            $color-blue-300 calc(20px - var(--background-gradient-offset)),
+            $color-blue-500 calc(60px - var(--background-gradient-offset)),
+            $color-dark calc(180px - var(--background-gradient-offset))
         );
     z-index: -1;
 }
