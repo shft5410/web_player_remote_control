@@ -49,8 +49,7 @@
 
     &__collapsible-container {
         overflow: hidden;
-        transition-property: max-height;
-        transition: 0.15s ease-in-out;
+        transition: max-height 0.15s ease-in-out;
     }
 
     &__second-row {
