@@ -1,15 +1,13 @@
 import { defineContentScript } from '#imports'
 
 import { type WSCommand } from '@/types/websocket'
-import { WSConnection } from '@/contentScripts/WSConnection'
+import bootstrapContentScript from '@/contentScripts/bootstrapContentScript'
 import * as YTMusic from '@/contentScripts/ytmusic'
 
 export default defineContentScript({
     matches: ['https://music.youtube.com/*'],
     main() {
-        new WSConnection(true, handleCommand)
-
-        function handleCommand(command: WSCommand) {
+        bootstrapContentScript((command: WSCommand) => {
             if (command.type === 'toggle-play-pause') {
                 YTMusic.togglePlayPause()
             } else if (command.type === 'previous-track') {
@@ -24,6 +22,6 @@ export default defineContentScript({
                     console.warn('Invalid volume value received:', volume)
                 }
             }
-        }
+        })
     },
 })

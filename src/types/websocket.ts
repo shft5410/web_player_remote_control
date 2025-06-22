@@ -7,6 +7,8 @@ export type SetVolumeCommand = BaseWSCommand<'set-volume', number>
 
 export type WSCommand = TogglePlayPauseCommand | PreviousTrackCommand | NextTrackCommand | SetVolumeCommand
 
+export type WSConnectionStatus = 'disconnected' | 'connecting' | 'connected'
+
 export function isWSCommand(obj: any): obj is WSCommand {
     return (
         typeof obj === 'object' &&
