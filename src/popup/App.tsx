@@ -10,7 +10,7 @@ import useStorageSyncedState from './hooks/useStorageSyncedState'
 import useActiveTab from '@/popup/hooks/useActiveTab'
 
 import { type RequestInitialDataMessage, isInitialDataMessage, isConnectionStatusMessage } from '@/types/messaging'
-import { type WSConnectionStatus } from '@/types/websocket'
+import { type WSConnectionStatus } from '@/types/webSocketConnection'
 import DisconnectedIcon from '@/popup/assets/icons/disconnected.svg?react'
 import ConnectedIcon from '@/popup/assets/icons/connected.svg?react'
 import EllipsisHorizontalIcon from '@/popup/assets/icons/ellipsisHorizontal.svg?react'

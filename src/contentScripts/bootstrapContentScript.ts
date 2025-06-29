@@ -1,6 +1,6 @@
 import { type Browser, storage } from '#imports'
 
-import { type WSCommand, type WSConnectionStatus } from '@/types/websocket'
+import { type WSCommand, type WSConnectionStatus } from '@/types/webSocketConnection'
 import { type RequestInitialDataMessage, type ConnectionStatusMessage } from '@/types/messaging'
 import { WSConnectionHandler } from '@/contentScripts/WSConnectionHandler'
 import { MessagingHandler } from '@/contentScripts/MessagingHandler'

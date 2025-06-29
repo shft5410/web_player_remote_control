@@ -1,6 +1,6 @@
 import { defineContentScript } from '#imports'
 
-import { type WSCommand } from '@/types/websocket'
+import { type WSCommand } from '@/types/webSocketConnection'
 import bootstrapContentScript from '@/contentScripts/bootstrapContentScript'
 import * as YTMusic from '@/contentScripts/ytmusic'
 

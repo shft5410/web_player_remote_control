@@ -1,15 +1,9 @@
-type WSClientOptions = {
-    reconnect: boolean
-    reconnectDelay: number // milliseconds
-}
-type WSClientEventMap = {
-    open: void
-    error: Event
-    close: void
-    message: MessageEvent
-}
-type WSClientEvent = keyof WSClientEventMap
-type WSClientEventListener<E extends WSClientEvent> = (event: WSClientEventMap[E]) => void
+import {
+    type WSClientOptions,
+    type WSClientEvent,
+    type WSClientEventListener,
+    type WSClientEventMap,
+} from '@/types/webSocketClient'
 
 export class WebSocketClient {
     static readonly READY_STATE = {

@@ -1,4 +1,4 @@
-import { type WSCommand, type WSConnectionStatus, isWSCommand } from '@/types/websocket'
+import { type WSCommand, type WSConnectionStatus, isWSCommand } from '@/types/webSocketConnection'
 import { WebSocketClient } from '@/contentScripts/WebSocketClient'
 
 type TransitionState<T> = {

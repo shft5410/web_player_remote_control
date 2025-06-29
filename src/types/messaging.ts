@@ -1,4 +1,4 @@
-import { type WSConnectionStatus } from '@/types/websocket'
+import { type WSConnectionStatus } from '@/types/webSocketConnection'
 
 type BaseExtMessage<T, P = undefined> = P extends undefined ? { type: T } : { type: T; payload: P }
 
