@@ -1,15 +1,36 @@
-import { type Browser } from '#imports'
+import { type Browser, storage } from '#imports'
 
 import { type WSCommand, type WSConnectionStatus } from '@/types/websocket'
 import { type RequestInitialDataMessage, type ConnectionStatusMessage } from '@/types/messaging'
 import { WSConnectionHandler } from '@/contentScripts/WSConnectionHandler'
 import { MessagingHandler } from '@/contentScripts/MessagingHandler'
 
-export default function bootstrapContentScript(handlePlayerCommand: (command: WSCommand) => void) {
+export default async function bootstrapContentScript(handlePlayerCommand: (command: WSCommand) => void) {
     const messagingHandler = new MessagingHandler(handleExtMessage)
+
+    const pageOrigin = window.location.origin
+
+    let [rememberConnection, isEnabled, serverUrl] = await Promise.all([
+        storage.getItem<boolean>(`local:page:${pageOrigin}/remember-connection`),
+        storage.getItem<boolean>(`local:page:${pageOrigin}/connection-enabled`),
+        storage.getItem<string>(`local:page:${pageOrigin}/ws-server`),
+    ])
+    if (rememberConnection === undefined || rememberConnection === null) {
+        rememberConnection = false
+        storage.setItem(`local:page:${pageOrigin}/remember-connection`, rememberConnection)
+    }
+    if (isEnabled === undefined || isEnabled === null || (!rememberConnection && isEnabled)) {
+        isEnabled = false
+        storage.setItem(`local:page:${pageOrigin}/connection-enabled`, isEnabled)
+    }
+    if (serverUrl === undefined || serverUrl === null) {
+        serverUrl = 'ws://localhost:9772'
+        storage.setItem(`local:page:${pageOrigin}/ws-server`, serverUrl)
+    }
+
     const wsConnectionHandler = new WSConnectionHandler(
-        true,
-        'ws://localhost:8080',
+        isEnabled,
+        serverUrl,
         handlePlayerCommand,
         handleWSConnectionStatusChange
     )
@@ -33,4 +54,18 @@ export default function bootstrapContentScript(handlePlayerCommand: (command: WS
             },
         })
     }
+
+    storage.watch<boolean>(`local:page:${pageOrigin}/connection-enabled`, (newValue, oldValue) => {
+        if (newValue === oldValue) return
+        if (typeof newValue === 'boolean') {
+            wsConnectionHandler.setIsEnabled(newValue)
+        }
+    })
+
+    storage.watch<string>(`local:page:${pageOrigin}/ws-server`, (newValue, oldValue) => {
+        if (newValue === oldValue) return
+        if (typeof newValue === 'string') {
+            wsConnectionHandler.setServerUrl(newValue)
+        }
+    })
 }
