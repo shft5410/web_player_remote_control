@@ -69,7 +69,7 @@ function App() {
 
     return (
         <div className="app">
-            <RippleBackground isEnabled={isConnectionEnabled} />
+            <RippleBackground spreadFactors={[0, 0.6, 1]} spreadFactorIndex={connectionStatusIndex} />
             <StatusButton
                 label={isConnectionEnabled ? 'Disconnect' : 'Connect'}
                 onClick={handleToggleConnection}

@@ -1,13 +1,15 @@
 import React from 'react'
 
 import '@/popup/components/RippleBackground.scss'
+import clamp from '@/utils/clamp'
 
 const RIPPLE_ANIMATION_DURATION = 1500 // milliseconds
 const BACKGROUND_ANIMATION_DURATION = 500 // milliseconds
 const BACKGROUND_MAX_OFFSET = 180 // pixels
 
 type Props = {
-    isEnabled?: boolean
+    spreadFactors?: number[]
+    spreadFactorIndex?: number
 }
 
 export default function RippleBackground(props: Props) {
@@ -37,52 +39,41 @@ export default function RippleBackground(props: Props) {
 
     React.useEffect(() => {
         let isRunning: boolean = true
-        const animationStartTimestamp = performance.now()
-        const animationStartOffset = backgroundGradientOffset.current
-
-        let effectiveAnimationDuration: number
-        if (props.isEnabled) {
-            effectiveAnimationDuration = BACKGROUND_ANIMATION_DURATION * (animationStartOffset / BACKGROUND_MAX_OFFSET)
-        } else {
-            effectiveAnimationDuration =
-                BACKGROUND_ANIMATION_DURATION * ((BACKGROUND_MAX_OFFSET - animationStartOffset) / BACKGROUND_MAX_OFFSET)
-        }
+        let startTimestamp: number | null = null
+        const startOffset = backgroundGradientOffset.current
+        const targetSpreadFactor = clamp(props.spreadFactors?.[props.spreadFactorIndex ?? 0] ?? 1, 0, 1)
+        const targetOffset = (1 - targetSpreadFactor) * BACKGROUND_MAX_OFFSET
+        const deltaOffset = targetOffset - startOffset
+        const effectiveDuration = BACKGROUND_ANIMATION_DURATION * (Math.abs(deltaOffset) / BACKGROUND_MAX_OFFSET)
 
         function animateBackground(timestamp: number) {
             if (!isRunning) {
                 return
             }
 
-            const animationProgress = (timestamp - animationStartTimestamp) / effectiveAnimationDuration
+            if (startTimestamp === null) {
+                startTimestamp = timestamp
+                requestAnimationFrame(animateBackground)
+                return
+            }
 
-            if (props.isEnabled) {
-                const offset = Math.max(animationStartOffset - animationProgress * animationStartOffset, 0)
-                backgroundGradientOffset.current = offset
-                rippleBackgroundRef.current!.style.setProperty('--background-gradient-offset', offset + 'px')
-                if (offset > 0) {
-                    requestAnimationFrame(animateBackground)
-                }
-            } else {
-                const offset = Math.min(
-                    animationStartOffset + animationProgress * (BACKGROUND_MAX_OFFSET - animationStartOffset),
-                    BACKGROUND_MAX_OFFSET
-                )
-                backgroundGradientOffset.current = offset
-                rippleBackgroundRef.current!.style.setProperty('--background-gradient-offset', offset + 'px')
-                if (offset < BACKGROUND_MAX_OFFSET) {
-                    requestAnimationFrame(animateBackground)
-                }
+            const animationProgress = (timestamp - startTimestamp) / effectiveDuration
+            const offset = startOffset + Math.min(animationProgress, 1) * deltaOffset
+            backgroundGradientOffset.current = offset
+            rippleBackgroundRef.current!.style.setProperty('--background-gradient-offset', offset + 'px')
+
+            if (animationProgress < 1) {
+                requestAnimationFrame(animateBackground)
             }
         }
-
-        if (effectiveAnimationDuration > 0) {
+        if (effectiveDuration > 0) {
             requestAnimationFrame(animateBackground)
         }
 
         return () => {
             isRunning = false
         }
-    }, [props.isEnabled])
+    }, [props.spreadFactors, props.spreadFactorIndex])
 
     return <div ref={rippleBackgroundRef} className="ripple-background" />
 }
