@@ -16,7 +16,7 @@ export class WebSocketClient {
     private serverUrl: string
     private options: WSClientOptions
 
-    private ws: WebSocket | null = null
+    private ws!: WebSocket
     private reconnectTimeout: NodeJS.Timeout | null = null
     private eventListeners: { [E in WSClientEvent]: WSClientEventListener<E>[] } = {
         open: [],
@@ -43,27 +43,25 @@ export class WebSocketClient {
         this.ws.onmessage = this.onWsMessage.bind(this)
     }
 
-    public async close() {
-        if (!this.ws) return
-
-        return new Promise<void>((resolve) => {
-            this.ws!.onclose = () => {
+    public async close(): Promise<boolean> {
+        return new Promise<boolean>((resolve) => {
+            this.ws.onclose = () => {
                 this.callEventListeners('close')
-                resolve()
+                resolve(true)
             }
 
             if (this.reconnectTimeout) {
                 clearTimeout(this.reconnectTimeout)
             }
 
-            if (this.ws!.readyState === WebSocket.CLOSED) {
-                resolve()
+            if (this.ws.readyState === WebSocket.CLOSED) {
+                resolve(false)
                 return
-            } else if (this.ws!.readyState === WebSocket.CLOSING) {
+            } else if (this.ws.readyState === WebSocket.CLOSING) {
                 return
             }
 
-            this.ws!.close()
+            this.ws.close()
         })
     }
 
@@ -108,6 +106,6 @@ export class WebSocketClient {
     }
 
     public getReadyState(): number {
-        return this.ws?.readyState ?? WebSocketClient.READY_STATE.CLOSED
+        return this.ws.readyState
     }
 }

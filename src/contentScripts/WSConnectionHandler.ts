@@ -106,7 +106,10 @@ export class WSConnectionHandler {
             return
         }
 
-        await this.ws.close()
+        const isConnectedOnClose = await this.ws.close()
+        if (!isConnectedOnClose) {
+            this.callConnectionStatusChangeCallback()
+        }
         this.ws = null
         console.log('Disconnected from WebSocket server')
     }
