@@ -72,10 +72,7 @@ export class WSConnectionHandler {
     }
 
     private connect() {
-        if (
-            this.ws?.getReadyState() === WebSocketClient.READY_STATE.OPEN ||
-            this.ws?.getReadyState() === WebSocketClient.READY_STATE.CONNECTING
-        ) {
+        if (this.ws) {
             console.warn('Already connected to WebSocket server')
             return
         }
@@ -104,16 +101,13 @@ export class WSConnectionHandler {
     }
 
     private async disconnect() {
-        if (
-            !this.ws ||
-            this.ws.getReadyState() === WebSocketClient.READY_STATE.CLOSED ||
-            this.ws.getReadyState() === WebSocketClient.READY_STATE.CLOSING
-        ) {
+        if (!this.ws) {
             console.warn('Not connected to WebSocket server')
             return
         }
 
         await this.ws.close()
+        this.ws = null
         console.log('Disconnected from WebSocket server')
     }
 
