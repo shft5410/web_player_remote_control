@@ -6,8 +6,6 @@ import { WSConnectionHandler } from '@/contentScripts/WSConnectionHandler'
 import { MessagingHandler } from '@/contentScripts/MessagingHandler'
 
 export default async function bootstrapContentScript(handlePlayerCommand: (command: WSCommand) => void) {
-    const messagingHandler = new MessagingHandler(handleExtMessage)
-
     const pageOrigin = window.location.origin
 
     let [rememberConnection, isEnabled, serverUrl] = await Promise.all([
@@ -28,6 +26,7 @@ export default async function bootstrapContentScript(handlePlayerCommand: (comma
         storage.setItem(`local:page:${pageOrigin}/ws-server`, serverUrl)
     }
 
+    const messagingHandler = new MessagingHandler(handleExtMessage)
     const wsConnectionHandler = new WSConnectionHandler(
         isEnabled,
         serverUrl,
