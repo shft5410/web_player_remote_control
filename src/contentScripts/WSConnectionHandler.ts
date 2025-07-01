@@ -76,7 +76,6 @@ export class WSConnectionHandler {
             console.warn('Already connected to WebSocket server')
             return
         }
-        this.callConnectionStatusChangeCallback()
 
         this.ws = new WebSocketClient(this.state.serverUrl.value, {
             reconnect: true,
@@ -98,6 +97,8 @@ export class WSConnectionHandler {
         })
 
         this.ws.addEventListener('message', this.handleMessage.bind(this))
+
+        this.callConnectionStatusChangeCallback()
     }
 
     private async disconnect() {
@@ -107,10 +108,10 @@ export class WSConnectionHandler {
         }
 
         const isConnectedOnClose = await this.ws.close()
+        this.ws = null
         if (!isConnectedOnClose) {
             this.callConnectionStatusChangeCallback()
         }
-        this.ws = null
         console.log('Disconnected from WebSocket server')
     }
 
