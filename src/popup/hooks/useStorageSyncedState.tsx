@@ -1,7 +1,7 @@
 import React from 'react'
 import { storage, type StorageItemKey } from '#imports'
 
-import useActiveTabUrl from '@/popup/hooks/useActiveTabUrl'
+import useActiveTab from '@/popup/hooks/useActiveTab'
 
 export default function useStorageSyncedState<T>(
     initialValue: T,
@@ -9,7 +9,15 @@ export default function useStorageSyncedState<T>(
     typeGuard: (value: unknown) => value is T,
     storageDebounceTime: number = 0
 ): [T, React.Dispatch<React.SetStateAction<T>>] {
-    const activeTabUrl = useActiveTabUrl()
+    const activeTab = useActiveTab(['url'])
+    const activeTabUrl = React.useMemo<URL | null>(() => {
+        if (activeTab?.url) {
+            try {
+                return new URL(activeTab.url)
+            } catch (_) {}
+        }
+        return null
+    }, [activeTab?.url])
 
     const [value, setValue] = React.useState<T>(initialValue)
     const [isLoaded, setIsLoaded] = React.useState<boolean>(false)
