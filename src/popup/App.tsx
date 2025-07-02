@@ -16,7 +16,7 @@ import ConnectedIcon from '@/popup/assets/icons/connected.svg?react'
 import EllipsisHorizontalIcon from '@/popup/assets/icons/ellipsisHorizontal.svg?react'
 
 function App() {
-    const activeTab = useActiveTab()
+    const activeTab = useActiveTab(['id'])
     const [isConnectionEnabled, setIsConnectionEnabled] = useStorageSyncedState<boolean>(
         false,
         'connection-enabled',
@@ -42,7 +42,7 @@ function App() {
             }
         }
 
-        if (activeTab && activeTab.id) {
+        if (activeTab?.id) {
             browser.tabs
                 .sendMessage<RequestInitialDataMessage, unknown>(activeTab.id, {
                     type: 'request-initial-data',
@@ -61,7 +61,7 @@ function App() {
         return () => {
             browser.runtime.onMessage.removeListener(handleMessage)
         }
-    }, [activeTab])
+    }, [activeTab?.id])
 
     function handleToggleConnection() {
         setIsConnectionEnabled((prev) => !prev)
