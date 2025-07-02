@@ -42,8 +42,8 @@ export default async function bootstrapContentScript(handlePlayerCommand: (comma
     }
 
     function handleExtMessage(
-        message: RequestInitialDataMessage,
-        sender: Browser.runtime.MessageSender,
+        _message: RequestInitialDataMessage,
+        _sender: Browser.runtime.MessageSender,
         sendResponse: (response?: any) => void
     ) {
         sendResponse({
