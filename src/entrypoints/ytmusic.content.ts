@@ -21,6 +21,8 @@ export default defineContentScript({
                 } else {
                     console.warn('Invalid volume value received:', volume)
                 }
+            } else {
+                console.warn(`Command ${command.type} is not supported on YouTube Music`)
             }
         })
     },
