@@ -1,4 +1,5 @@
-import { type WSCommand, type WSConnectionStatus, isWSCommand } from '@/types/webSocketConnection'
+import { type WSConnectionStatus } from '@/types/webSocketConnection'
+import { type PlayerCommandMessage, isPlayerCommandMessage } from '@/types/messaging'
 import { WebSocketClient } from '@/contentScripts/WebSocketClient'
 
 type TransitionState<T> = {
@@ -12,7 +13,7 @@ export class WSConnectionHandler {
         isEnabled: { value: false, pending: null, isTransitioning: false } as TransitionState<boolean>,
         serverUrl: { value: '', pending: null, isTransitioning: false } as TransitionState<string>,
     }
-    private messageCallback: (command: WSCommand) => void
+    private messageCallback: (command: PlayerCommandMessage) => void
     private connectionStatusChangeCallback?: (status: WSConnectionStatus) => void
 
     private ws: WebSocketClient | null = null
@@ -20,7 +21,7 @@ export class WSConnectionHandler {
     constructor(
         isEnabled: boolean,
         serverUrl: string,
-        messageCallback: (command: WSCommand) => void,
+        messageCallback: (command: PlayerCommandMessage) => void,
         connectionStatusChangeCallback?: (status: WSConnectionStatus) => void
     ) {
         this.state.isEnabled.value = isEnabled
@@ -125,7 +126,7 @@ export class WSConnectionHandler {
             return
         }
 
-        if (isWSCommand(data)) {
+        if (isPlayerCommandMessage(data)) {
             this.messageCallback(data)
         } else {
             console.warn('Received unknown command:', data)

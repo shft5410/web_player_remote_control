@@ -1,13 +1,14 @@
 import { defineContentScript } from '#imports'
 
-import { type WSCommand } from '@/types/webSocketConnection'
-import bootstrapContentScript from '@/contentScripts/bootstrapContentScript'
+import { type PlayerCommandMessage } from '@/types/messaging'
+import { MainContentMessagingHandler } from '@/contentScripts/MainContentMessagingHandler'
 import * as YTMusic from '@/contentScripts/ytmusic'
 
 export default defineContentScript({
     matches: ['https://music.youtube.com/*'],
+    world: 'MAIN',
     main() {
-        bootstrapContentScript((command: WSCommand) => {
+        new MainContentMessagingHandler((command: PlayerCommandMessage) => {
             if (command.type === 'toggle-play-pause') {
                 YTMusic.togglePlayPause()
             } else if (command.type === 'previous-track') {

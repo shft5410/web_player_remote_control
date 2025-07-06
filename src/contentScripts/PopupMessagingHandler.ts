@@ -1,9 +1,8 @@
 import { type Browser, browser } from '#imports'
 
-import { type RequestInitialDataMessage } from '@/types/messaging'
-import { isRequestInitialDataMessage } from '@/types/messaging'
+import { type RequestInitialDataMessage, isRequestInitialDataMessage } from '@/types/messaging'
 
-export class MessagingHandler {
+export class PopupMessagingHandler {
     private messageCallback: (
         message: RequestInitialDataMessage,
         sender: Browser.runtime.MessageSender,
