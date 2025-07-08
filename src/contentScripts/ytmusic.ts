@@ -1,3 +1,6 @@
+/**
+ * Toggle between play and pause.
+ */
 export function togglePlayPause() {
     const playPauseButton = document.querySelector('#play-pause-button.ytmusic-player-bar') as HTMLElement
     if (!playPauseButton) {
@@ -8,6 +11,9 @@ export function togglePlayPause() {
     playPauseButton.click()
 }
 
+/**
+ * Go to the previous track.
+ */
 export function previousTrack() {
     const previousButton = document.querySelector('.previous-button.ytmusic-player-bar') as HTMLElement
     if (!previousButton) {
@@ -18,6 +24,9 @@ export function previousTrack() {
     previousButton.click()
 }
 
+/**
+ * Go to the next track.
+ */
 export function nextTrack() {
     const nextButton = document.querySelector('.next-button.ytmusic-player-bar') as HTMLElement
     if (!nextButton) {
@@ -28,6 +37,11 @@ export function nextTrack() {
     nextButton.click()
 }
 
+/**
+ * Set the volume of the player.
+ *
+ * @param volume Volume value between 0 and 1.
+ */
 export function setVolume(volume: number) {
     const sliderBar = document.querySelector('#volume-slider.ytmusic-player-bar #sliderBar') as HTMLElement
     if (!sliderBar) {

@@ -7,7 +7,14 @@ import * as YTMusic from '@/contentScripts/ytmusic'
 export default defineContentScript({
     matches: ['https://music.youtube.com/*'],
     world: 'MAIN',
+
+    /**
+     * This content script calls the page specific functions to execute player commands on YouTube Music.
+     * It receives the player commands from the main content script via the messaging channel of the window object.
+     * This script is only injected into the YouTube Music web page and runs in the main world.
+     */
     main() {
+        // Set up the messaging handler to receive player commands from the main content script
         new MainContentMessagingHandler((command: PlayerCommandMessage) => {
             if (command.type === 'toggle-play-pause') {
                 YTMusic.togglePlayPause()
