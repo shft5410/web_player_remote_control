@@ -39,7 +39,6 @@ export default function useActiveTab(watchProperties?: string[]): Browser.tabs.T
          * @param tab The updated tab object.
          */
         function handleActiveTabChange(_tabId: number, changeInfo: Browser.tabs.TabChangeInfo, tab: Browser.tabs.Tab) {
-            console.log('Tab updated:', changeInfo)
             // If the tab is not active or the specified properties have not changed, do nothing
             if (!tab.active || watchProperties?.every((property) => !(property in changeInfo))) return
             browser.windows.getCurrent().then((currentWindow) => {
