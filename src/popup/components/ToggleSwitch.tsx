@@ -23,8 +23,7 @@ export default function ToggleSwitch(props: Props) {
      * @param event Change event from the checkbox input.
      */
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const isChecked = event.target.checked
-        props.onChange?.(isChecked)
+        props.onChange?.(event.target.checked)
     }
 
     return (
