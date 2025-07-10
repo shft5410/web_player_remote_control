@@ -61,7 +61,7 @@ export default function RippleBackground(props: Props) {
     /**
      * Effect to animate the background gradient offset based on the spread factor.
      *
-     * The effect is rerun when the array of spread factors or the current spread factor index changes.
+     * The effect is rerun when the stringified array of spread factors or the current spread factor index changes.
      * It repeatedly updates the background gradient by registering a callback on each animation frame.
      * The cleanup function stops the animation.
      */
@@ -113,7 +113,7 @@ export default function RippleBackground(props: Props) {
             // Cleanup: stop the animation
             isRunning = false
         }
-    }, [props.spreadFactors, props.spreadFactorIndex])
+    }, [JSON.stringify(props.spreadFactors), props.spreadFactorIndex])
 
     return <div ref={rippleBackgroundRef} className="ripple-background" />
 }
