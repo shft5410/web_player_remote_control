@@ -15,18 +15,36 @@ type Props = {
     variantIndex: number
 }
 
+/**
+ * Component that renders a button with a status indicator next to it.
+ *
+ * On hover, the status element expands and displays a text description of the current status.
+ *
+ * @param props Component props.
+ * @param props.label The text displayed on the button.
+ * @param props.onClick The function to call when the button is clicked.
+ * @param props.statusVariants An array of status variants, each containing an icon and text.
+ * @param props.variantIndex The index of the currently active status variant.
+ */
 export default function StatusButton(props: Props) {
     const collapsibleContainerRef = React.useRef<HTMLDivElement>(null)
     const [isStatusExpanded, setIsStatusExpanded] = React.useState<boolean>(false)
 
+    // Component to render the icon for the active status variant
     const StatusIcon = React.useMemo(() => {
         return props.statusVariants[props.variantIndex].icon
     }, [props.statusVariants[props.variantIndex].icon])
 
+    // Text for the active status variant
     const statusText = React.useMemo(() => {
         return props.statusVariants[props.variantIndex].text
     }, [props.statusVariants[props.variantIndex].text])
 
+    /**
+     * Effect to handle the expansion and collapse of the status text container.
+     *
+     * The effect is rerun when the expand status or the status text changes.
+     */
     React.useEffect(() => {
         if (isStatusExpanded) {
             collapsibleContainerRef.current!.style.maxWidth = collapsibleContainerRef.current!.scrollWidth + 'px'
@@ -35,10 +53,16 @@ export default function StatusButton(props: Props) {
         }
     }, [isStatusExpanded, props.statusVariants[props.variantIndex].text])
 
+    /**
+     * Expand the status text container when the mouse enters the status element.
+     */
     function handleMouseEnter() {
         setIsStatusExpanded(true)
     }
 
+    /**
+     * Collapse the status text container when the mouse leaves the status element.
+     */
     function handleMouseLeave() {
         setIsStatusExpanded(false)
     }

@@ -7,6 +7,13 @@ type Props = {
     label: string
 }
 
+/**
+ * Component for a toggle switch setting that syncs with storage.
+ *
+ * @param props - Component props.
+ * @param props.settingKey - The key for the setting in storage.
+ * @param props.label - The label for the setting.
+ */
 export default function ToggleSetting(props: Props) {
     const [isChecked, setIsChecked] = useStorageSyncedState<boolean>(
         false,

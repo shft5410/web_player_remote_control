@@ -15,6 +15,9 @@ import DisconnectedIcon from '@/popup/assets/icons/disconnected.svg?react'
 import ConnectedIcon from '@/popup/assets/icons/connected.svg?react'
 import EllipsisHorizontalIcon from '@/popup/assets/icons/ellipsisHorizontal.svg?react'
 
+/**
+ * Popup application for controlling the WebSocket connection.
+ */
 function App() {
     const activeTab = useActiveTab(['id'])
     const [isConnectionEnabled, setIsConnectionEnabled] = useStorageSyncedState<boolean>(
@@ -24,7 +27,19 @@ function App() {
     )
     const [connectionStatusIndex, setConnectionStatusIndex] = React.useState<number>(0)
 
+    /**
+     * Effect to handle messages from the content script and request initial data.
+     *
+     * The effect is rerun when the id of the active tab changes.
+     * It registers a message listener, which handles incoming messages from the content script.
+     * The cleanup function removes the message listener.
+     */
     React.useEffect(() => {
+        /**
+         * Update the connection status index based on the current WebSocket connection status.
+         *
+         * @param status The current WebSocket connection status.
+         */
         function updateConnectionStatus(status: WSConnectionStatus) {
             const statusIndexMap: Record<string, number> = {
                 disconnected: 0,
@@ -34,6 +49,11 @@ function App() {
             setConnectionStatusIndex(statusIndexMap[status])
         }
 
+        /**
+         * Handle messages received from the content script.
+         *
+         * @param message The message received from the content script.
+         */
         function handleMessage(message: unknown) {
             if (isConnectionStatusMessage(message)) {
                 updateConnectionStatus(message.payload)
@@ -43,6 +63,7 @@ function App() {
         }
 
         if (activeTab?.id) {
+            // If the id of the active tab is available, request initial data from the content script
             browser.tabs
                 .sendMessage<RequestInitialDataMessage, unknown>(activeTab.id, {
                     type: 'request-initial-data',
@@ -55,14 +76,20 @@ function App() {
                     updateConnectionStatus(response.payload.connectionStatus)
                 })
                 .catch(() => {})
+
+            // Listen for messages from the content script
             browser.runtime.onMessage.addListener(handleMessage)
         }
 
         return () => {
+            // Cleanup: remove the message listener
             browser.runtime.onMessage.removeListener(handleMessage)
         }
     }, [activeTab?.id])
 
+    /**
+     * Toggle the enabled state of the WebSocket connection.
+     */
     function handleToggleConnection() {
         setIsConnectionEnabled((prev) => !prev)
     }

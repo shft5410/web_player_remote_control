@@ -7,15 +7,30 @@ type Props = {
     isExpandable?: boolean
 }
 
+/**
+ * Component for a base setting that can optionally be expandable.
+ *
+ * @param props Component props.
+ * @param props.label The label for the setting.
+ * @param props.isExpandable Whether the setting is expandable or not. Defaults to false.
+ */
 export default function BaseSetting(props: React.PropsWithChildren<Props>) {
     const collapsibleContainerRef = React.useRef<HTMLDivElement>(null)
     const [isExpanded, setIsExpanded] = React.useState<boolean>(false)
 
+    /**
+     * Toggle the expanded state of the setting.
+     */
     function handleToggleExpand() {
         if (!props.isExpandable) return
         setIsExpanded((prev) => !prev)
     }
 
+    /**
+     * Effect to expand or collapse the setting when it is expandable.
+     *
+     * The effect reruns when the expand state or the `isExpandable` prop changes.
+     */
     React.useLayoutEffect(() => {
         if (props.isExpandable && collapsibleContainerRef.current) {
             collapsibleContainerRef.current.style.maxHeight = isExpanded
@@ -24,6 +39,7 @@ export default function BaseSetting(props: React.PropsWithChildren<Props>) {
         }
     }, [isExpanded, props.isExpandable])
 
+    // Determine the classes for the base setting container
     const baseSettingClasses = ['base-setting']
     if (props.isExpandable) {
         baseSettingClasses.push('base-setting--expandable')
