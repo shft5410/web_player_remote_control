@@ -108,3 +108,8 @@ Please refer to the [Player Commands](#player-commands) section for a list of su
 ## Acknowledgements
 
 This extension is built on top of the [WXT Framework](https://github.com/wxt-dev/wxt), which greatly simplifies the development of browser extensions.
+
+## Attributions
+
+This project uses [Google Material Symbols](https://fonts.google.com/icons?icon.set=Material+Symbols), which are licensed under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
+The application icon is based on a Google Material Symbol with a custom background added.
