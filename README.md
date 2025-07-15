@@ -89,9 +89,10 @@ The extension currently supports the following web players:
 
 The extension is currently available for the following browsers:
 
-| Browser | Installation instructions                                                                                                                                                                                                 |
-| ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Firefox | Download the `.xpi` file from the [latest GitHub release](https://github.com/shft5410/web_player_remote_control/releases/latest) and install it via the "Install Add-on From File" option in the Firefox Add-ons Manager. |
+| Browser | Installation instructions                                                                                                                                                                                                                     |
+| ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Firefox | Download the `.xpi` file from the [latest GitHub release](https://github.com/shft5410/web_player_remote_control/releases/latest) and install it via the "Install Add-on From File" option in the Firefox Add-ons Manager.                     |
+| Chrome  | Install the extension from the [Chrome Web Store](https://chromewebstore.google.com/detail/web-player-remote-control/olhonbnjccgpanphbgbkpeekeenoekkj). Please use the link provided, as the extension is published as unlisted in the store. |
 
 ## Use a Custom Server
 
